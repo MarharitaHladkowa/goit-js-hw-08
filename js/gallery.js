@@ -63,46 +63,47 @@ const images = [
     description: "Lighthouse Coast Sea",
   },
 ];
+
 const galleryContainer = document.querySelector(".gallery");
 
-images.forEach((image) => {
-  const galleryItem = document.createElement("li");
-  galleryItem.classList.add("gallery-item");
+const galleryMarkup = images
+  .map(
+    (image) => `
+    <li class="gallery-item">
+      <a class="gallery-link" href="${image.original}">
+        <img
+          class="gallery-image"
+          src="${image.preview}"
+          data-source="${image.original}"
+          alt="${image.description}"
+        />
+      </a>
+    </li>
+  `
+  )
+  .join("");
 
-  galleryItem.innerHTML = `
-  <a class="gallery-link" href="${image.original}">
-    <img
-      class="gallery-image"
-      src="${image.preview}"
-      data-source="${image.original}"
-      alt="${image.description}"
-    />
-  </a>
-  `;
-
-  galleryContainer.appendChild(galleryItem);
-});
+galleryContainer.innerHTML = galleryMarkup;
 
 galleryContainer.addEventListener("click", (event) => {
   event.preventDefault();
+
   if (event.target.nodeName !== "IMG") return;
 
   const bigImageUrl = event.target.dataset.source;
-  console.log("Открываем большое изображение:", bigImageUrl);
 
-  function openModal() {
-    const instance = basicLightbox.create(`
-      <img src="${bigImageUrl}" alt="${event.target.alt}" />
-    `);
+  const instance = basicLightbox.create(`
+    <img src="${bigImageUrl}" alt="${event.target.alt}" />
+  `);
 
-    instance.show();
+  instance.show();
 
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") {
-        instance.close();
-      }
-    });
-  }
-  openModal();
-  console.log("Модальное окно открыто");
+  const onEsc = (event) => {
+    if (event.key === "Escape") {
+      instance.close();
+      document.removeEventListener("keydown", onEsc);
+    }
+  };
+
+  document.addEventListener("keydown", onEsc);
 });
