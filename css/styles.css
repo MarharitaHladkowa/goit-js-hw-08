@@ -1,0 +1,41 @@
+body {
+  display: block;
+  margin-top: 24px;
+  margin-right: 156px;
+  margin-bottom: 24px;
+  margin-left: 156px;
+}
+
+ul.gallery {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+ul.gallery li {
+  flex: 1 1 calc((100% - 48px) / 3);
+  box-sizing: border-box;
+}
+
+ul.gallery li a {
+  display: block;
+}
+
+ul.gallery li img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+  transition: transform 0.3s;
+}
+
+ul.gallery li img:hover {
+  transform: scale(1.05);
+}
+
+ul.gallery li a:focus img {
+  outline: 2px solid #007bff;
+  outline-offset: 4px;
+}
